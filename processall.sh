@@ -5,7 +5,7 @@
 PCAPS_DIR=/media/nate/wf-research/IoTDataset            # dataset
 OUTPUT_DIR=/media/nate/wf-research/IoTDatasetProcessed  # output root
 SIM_PATH=/home/nate/PycharmProjects/joy/bin/joy         # sim binary
-EXTRACT_PATH=/home/nate/PycharmProjects/joy/extractfeatures.py
+EXTRACT_PATH=/home/nate/PycharmProjects/iot-device-classification/extractfeatures.py
 
 # option arguments for CISCO Joy
 OPTIONS="dns=1 tls=1 bidir=1 verbosity=2 logfile=joy.log"

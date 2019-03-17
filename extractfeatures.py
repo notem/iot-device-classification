@@ -52,7 +52,16 @@ def iterjsonfile(file):
 def extract_features(flows):
     """
     Extract features from list of flows
-    Returns a dictionary of nine elements
+    Returns a dictionary of nine elements representing the features for the instance.
+    1) The mode value for flow volume (bytes)
+    2) The mode value for flow duration (s)
+    3) The mode value for average flow rate (B/s)
+    4) The mode value for flow sleep time (s)
+    5) The mode value for interval between DNS flows (s)
+    6) The mode value for interval between NTP flows (s)
+    7) Dictionary of remote port numbers mapped to their count
+    8) Dictionary of domain names mapped to their count
+    9) Dictionary of supported TLS ciphers mapped to their count
     """
     features = {}
 
