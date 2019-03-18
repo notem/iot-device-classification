@@ -5,10 +5,19 @@ import argparse
 import os
 import numpy as np
 
+# Supress sklearn warnings
+def warn(*args, **kwargs):
+    pass
+import warnings
+warnings.warn = warn
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import classification_report
 
+# seed value
+# (ensures consistent dataset splitting between runs)
 SEED = 0
 
 
@@ -117,20 +126,20 @@ def do_stage_0(Xp_tr, Xp_ts, Xd_tr, Xd_ts, Xc_tr, Xc_ts, Y_tr, Y_ts):
 
 
 def do_stage_1(X_tr, X_ts, Y_tr, Y_ts):
-
     """
     Perform stage 0 of the classification procedure:
         process each multinomial feature using naive bayes
         return the class prediction and confidence score for each instance feature
     """
-    model = RandomForestClassifier(n_jobs=4, n_estimators=100, oob_score=True)
+    model = RandomForestClassifier(n_jobs=-1, n_estimators=10, oob_score=True)
     model.fit(X_tr, Y_tr)
-    print("RF accuracy = {}".format(model.score(X_ts, Y_ts)))
+    return model
 
 
-if __name__ == "__main__":
-    # parse cmdline args
-    args = parse_args()
+def main(args):
+    """
+    Perform main logic of program
+    """
 
     # load dataset
     print("Loading dataset ... ")
@@ -187,5 +196,15 @@ if __name__ == "__main__":
 
     print("Performing Stage 1 classification ... ")
     # perform final classification
-    do_stage_1(X_tr, X_ts, Y_tr, Y_ts)
 
+    model = do_stage_1(X_tr_full, X_ts_full, Y_tr, Y_ts)
+    print("RF accuracy = {}".format(model.score(X_ts_full, Y_ts)))
+
+    pred = model.predict(X_ts_full)
+    print(classification_report(Y_ts, pred, target_names=le.classes_))
+
+
+if __name__ == "__main__":
+    # parse cmdline args
+    args = parse_args()
+    main(args)
